@@ -2,6 +2,11 @@ import { View, Text } from "react-native";
 import React from "react";
 import { Stack, Tabs } from "expo-router";
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import home from "./home";
+import BorrowScreen from './../borrow';
+import DonateScreen from "./donate";
 
 const TabIcon = ({ name, focused }) => {
   return (
@@ -25,7 +30,6 @@ const TabIcon = ({ name, focused }) => {
 const TabsLayout = () => {
   return (
     <>
-    
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
@@ -63,12 +67,36 @@ const TabsLayout = () => {
                   />
                   <Text
                     className={`${
-                      focused
-                        ? "font-bold text-white"
-                        : "font-light text-white"
+                      focused ? "font-bold text-white" : "font-light text-white"
                     }`}
                   >
                     Donate
+                  </Text>
+                </>
+              );
+            },
+          }}
+        />
+
+        <Tabs.Screen
+          name="volunteer"
+          options={{
+            title: "notification",
+            headerShown: false,
+            tabBarIcon: ({ name, focused }) => {
+              return (
+                <>
+                  <Ionicons
+                    name="notifications"
+                    size={28}
+                    color={`${focused ? "white" : "#707070"}`}
+                  />
+                  <Text
+                    className={`${
+                      focused ? "font-bold text-white" : "font-light text-white"
+                    }`}
+                  >
+                    Volunteer
                   </Text>
                 </>
               );
@@ -91,9 +119,7 @@ const TabsLayout = () => {
                   />
                   <Text
                     className={`${
-                      focused
-                        ? "font-bold text-white"
-                        : "font-light text-white"
+                      focused ? "font-bold text-white" : "font-light text-white"
                     }`}
                   >
                     Notification
@@ -107,5 +133,19 @@ const TabsLayout = () => {
     </>
   );
 };
+
+const TabsStack = () => {
+  const Stack = createStackNavigator()
+
+  return(
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={home} options={{ headerShown: false }} />
+        <Stack.Screen name="Borrow" component={BorrowScreen} />
+        <Stack.Screen name="donate" component={DonateScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
 
 export default TabsLayout;

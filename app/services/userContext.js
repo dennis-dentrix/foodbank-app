@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, collection, db, getDocs } from "../../lib/firebase";
 import { doc, query, where } from "firebase/firestore";
+import { Alert } from "react-native";
 
 const GlobalContext = createContext();
 
@@ -11,13 +12,13 @@ const GlobalProvider = ({ children }) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState(null)
+  const [bankData, setBankData] = useState([]);
 
   const getCurrentUser = async () => {
     setIsLoading(true);
     try {
       const currentAccount = auth.currentUser;
-      console.log(currentAccount.email)
-  
+      
       if (!currentAccount) throw new Error("No current user");
   
       const q = query(collection(db, "users"), where("email", "==", currentAccount.email));
@@ -27,7 +28,7 @@ const GlobalProvider = ({ children }) => {
         querySnapshot.forEach((doc) => {
           console.log(doc.id, " => ", doc.data()); 
           setUser(doc.data());
-          setUserName(doc.data().username); 
+          setUserName(doc.data().username); // Adjust according to your data structure
           setIsLoggedin(true);
           return doc
         });
@@ -43,9 +44,26 @@ const GlobalProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
+
+//   const getFoodData = async () => {
+//     setIsLoading(true)
+//     try {
+//         const foodSnapShot = await getDocs(collection(db, "foodList"));
+//         foodSnapShot.forEach((doc) => {
+//               setBankData(doc.data())
+// }); 
+//     } catch(err) {
+//         console.log(err)
+//         Alert.alert(`${err}`)
+//     } finally {
+//         setIsLoading(false)
+//     }
+// }
+
   
   useEffect(() => {
     getCurrentUser();
+    // getFoodData()
   }, []);
 
   return (
@@ -58,7 +76,9 @@ const GlobalProvider = ({ children }) => {
         isLoading,
         setIsLoading,
         userName,
-        setUserName
+        setUserName,
+        bankData,
+        setBankData
       }}
     >
       {children}

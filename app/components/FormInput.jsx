@@ -7,7 +7,9 @@ const FormInput = ({
   value,
   handleChangeText,
   placeholder,
-  keboardType,
+  keyboardType,
+  autocapitalize,
+  secureTextEntry
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
@@ -16,25 +18,30 @@ const FormInput = ({
       <View
         className={`w-full h-[52px] bg-secondary rounded-lg focus:border-2 focus:border-red-400 items-center flex-row px-4`}
       >
-      <TextInput
+        <TextInput
           className="flex-1 text-white font-semibold text-base w-full "
           value={value}
           onChangeText={handleChangeText}
           placeholderTextColor={"#7b7b8b"}
           placeholder={placeholder}
-          secureTextEntry={title === "Password" && !showPassword}
-          keyboardType={title === "Email" ?  "email-address" : "default"}
+          secureTextEntry={showPassword ?  false : secureTextEntry}
 
+          keyboardType={keyboardType}
+          autoCapitalize={autocapitalize}
+          
         />
-        {
-            title === "Password" ? (
-                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                    {
-                        showPassword ? <Feather name="eye" size={20} color="white" /> : <Feather name="eye-off" size={20} color="white" />
-                    }
-                </TouchableOpacity>
-            ) : ""
-        }
+        {/* keyboardType={title === "Email" ?  "email-address" : "default"} */}
+        {title === "Password" || title === "Confirm Password" ? (
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            {showPassword ? (
+              <Feather name="eye" size={20} color="white" />
+            ) : (
+              <Feather name="eye-off" size={20} color="white" />
+            )}
+          </TouchableOpacity>
+        ) : (
+          ""
+        )}
       </View>
     </View>
   );

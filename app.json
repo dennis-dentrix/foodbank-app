@@ -1,23 +1,23 @@
 {
   "expo": {
-    "name": "Foodbank",
-    "slug": "foodbank",
+    "name": "Food bank UK",
+    "slug": "food-bank-uk",
     "scheme": "foodbank",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
-      "package" : "com.patrick.foodbank"
+      "bundleIdentifier": "com.foodbank.uk"
     },
     "android": {
-      "package" : "com.patrick.foodbank",
+      "package": "com.patrick.foodbank",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,9 +31,19 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/static/RedditSans-Black.ttf"]
+          "fonts": [
+            "./assets/static/RedditSans-Black.ttf"
+          ]
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ed11d244-3b6f-44d1-aa1b-9015e42fee47"
+      }
+    }
   }
 }

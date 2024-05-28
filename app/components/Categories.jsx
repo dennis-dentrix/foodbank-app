@@ -1,29 +1,62 @@
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import React from "react";
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useMemo } from "react";
 
-const Categories = () => {
-  const categories = [
-    { id: "1", name: "fruits" },
-    { id: "2", name: "flour" },
-    { id: "3", name: "Food Name" },
-    { id: "4", name: "Food Name" },
-    { id: "5", name: "Food Name" },
-    { id: "6", name: "Food Name" },
+const Categories = ({ categoriesNames, onCategorySelect }) => {
+  // Function to remove duplicate categories
+  const getUniqueCategories = (categories) => {
+    const uniqueCategories = [];
+    const categorySet = new Set();
 
-  ];
+    categories.forEach((item) => {
+      if (!categorySet.has(item.category)) {
+        uniqueCategories.push(item);
+        categorySet.add(item.category);
+      }
+    });
+
+    return uniqueCategories;
+  };
+
+  // Use useMemo to memoize the unique categories list
+  const uniqueCategories = useMemo(() => getUniqueCategories(categoriesNames), [categoriesNames]);
+
   return (
-    <FlatList
-      data={categories}
-      keyExtractor={(item) => item.id}
-      horizontal
-      renderItem={({ item }) => (
-        <TouchableOpacity className="p-2 border rounded-lg border-black hover:bg-gray-200  mx-2  ">
-          <Text className="text-gray-500 font-bold text-lg ">{item.name}</Text>
-        </TouchableOpacity>
-      )}
-      className="mb-2 pb-4"
-    />
+    <View>
+      <FlatList
+        data={[{ id: 'all', category: 'All' }, ...uniqueCategories]}
+        keyExtractor={(item) => item.id}
+        horizontal
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.categoryButton}
+            onPress={() => onCategorySelect(item.category)}
+          >
+            <Text style={styles.categoryText}>{item.category}</Text>
+          </TouchableOpacity>
+        )}
+        style={styles.flatList}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  flatList: {
+    marginBottom: 2,
+    paddingBottom: 4,
+  },
+  categoryButton: {
+    padding: 10,
+    borderRadius: 8,
+    borderColor: '#000',
+    borderWidth: 1,
+    marginHorizontal: 4,
+  },
+  categoryText: {
+    color: '#555',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+});
 
 export default Categories;

@@ -3,19 +3,20 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
   Image,
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  SafeAreaView,
+  Alert,
 } from "react-native";
-// import { auth, addDoc, collection, db } from "../firebase";
-
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, addDoc, collection, db } from "../../lib/firebase";
 import { router } from "expo-router";
+import FormInput from "../components/FormInput";
+import CustomBtn from "../components/customBtn";
+import logo from "../../assets/logo.png";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -32,22 +33,23 @@ const Signup = () => {
         const response = await createUserWithEmailAndPassword(
           auth,
           email,
-          password,
+          password
         );
         const user = response.user;
-        console.log("Response Email.", {...response})
+        console.log("Response Email.", { ...response });
 
         const userRef = collection(db, "users");
         const newUserRef = await addDoc(userRef, {
-          username, email
-        })
-       
+          username,
+          email,
+        });
+
         setUsername("");
         setEmail("");
         setConfirmPassword("");
         setPassword("");
         alert("Account created successfully. ");
-       router.push("/home")
+        router.push("/home");
         return user;
       } catch (error) {
         console.log(error);
@@ -61,140 +63,138 @@ const Signup = () => {
     }
   };
 
- 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.title}>Create an account</Text>
-        
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          value={username}
-          onChangeText={setUsername}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.innerContainer}>
+          <Image source={logo} style={styles.logo} resizeMode="contain" />
 
-        {!loading ? (
-          <TouchableOpacity onPress={() => register()}>
-            <Text style={styles.registerBtn}>Register</Text>
-          </TouchableOpacity>
-        ) : (
-          <ActivityIndicator size="large" color="#0000ff" />
-        )}
-       
-        <View>
-          <Text>By registering you agree to the terms of the app.</Text>
-        </View>
+          <Text style={styles.title}>Create an account</Text>
 
-        <View style={styles.registerContainer}>
-          <TouchableOpacity>
-            <Text style={styles.registergoogle}>Signin with Google</Text>
-          </TouchableOpacity>
+          <View className="w-full" >
 
-          <TouchableOpacity>
-            <Text style={styles.registerApple}>Signin with Apple</Text>
-          </TouchableOpacity>
+          <FormInput
+            placeholder={"Full Name"}
+            value={username}
+            handleChangeText={setUsername}
+            title={"Full Name"}
+          />
 
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontSize: 18 }}>Already have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text style={{ fontWeight: 600, color: "#ff8a80", fontSize: 20 }}>
-                Login
-              </Text>
-            </TouchableOpacity>
+          <FormInput
+            placeholder={"Email"}
+            value={email}
+            handleChangeText={setEmail}
+            keyboardType={"email-address"}
+            autoCapitalize="none"
+            title={"Email "}
+          />
+
+          <FormInput
+            placeholder="Password"
+            value={password}
+            handleChangeText={setPassword}
+            secureTextEntry
+            title="Password"
+          />
+
+          <FormInput
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            handleChangeText={setConfirmPassword}
+            secureTextEntry
+            title={"Confirm Password"}
+          />
+
+          {!loading ? (
+            <CustomBtn
+              title={"Register"}
+              containerStyle={styles.button}
+              handlePress={() => register()}
+            />
+          ) : (
+            <ActivityIndicator size="large" color="#0000ff" />
+          )}
+
+          </View>
+          <View style={styles.termsContainer}>
+            <Text style={styles.termsText}>
+              By registering you agree to the terms of the app.
+            </Text>
+          </View>
+
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              Already have an account?{" "}
+              <TouchableOpacity onPress={() => router.push("signin")}>
+                <Text style={styles.loginLink}>Login</Text>
+              </TouchableOpacity>
+            </Text>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  registerBtn: {
-    backgroundColor: "#E4EEF4",
-    color: "#24222A",
-    padding: 10,
-    borderRadius: 5,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    width: 300,
-  },
-  registerContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 20,
-    marginVertical: 20,
-  },
-  registergoogle: {
-    backgroundColor: "#ff8a80",
-    color: "#24222A",
-    padding: 10,
-    borderRadius: 5,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    width: 300,
-  },
-  registerApple: {
-    backgroundColor: "#0088cc",
-    color: "#eee",
-    padding: 10,
-    borderRadius: 5,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    width: 300,
-  },
   container: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: "#136e63",
+  },
+  scrollView: {
     justifyContent: "center",
-    padding: 20,
+    alignItems: "center",
+    paddingVertical: 20,
+  },
+  innerContainer: {
+    width: "100%",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 40,
+    backgroundColor: "#136e63",
+    borderRadius: 12,
+    
+  },
+  logo: {
+    height: 120,
+    width: 120,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#093731",
     marginBottom: 20,
+    textAlign: "center",
   },
-  input: {
+  button: {
+    marginTop: 20,
+    backgroundColor: "#093731",
     width: "100%",
-    borderWidth: 1,
-    borderColor: "#DBDDE9",
-    borderRadius: 4,
-    padding: 10,
-    marginBottom: 10,
-    fontSize: 18,
+  },
+  termsContainer: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+  termsText: {
+    color: "#093731",
+    fontSize: 14,
+    textAlign: "center",
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 20,
+    alignItems: "center"
+  },
+  footerText: {
+    color: "#000",
+    fontSize: 17,
+    fontWeight: "medium"
+  },
+  loginLink: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
 
