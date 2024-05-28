@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, ScrollView, SafeAreaView, Image, Alert, StyleSheet } from 'react-native'
+import { View, Text, ScrollView, SafeAreaView, Image, Alert, StyleSheet, TouchableOpacity } from 'react-native'
 import { Link, router } from 'expo-router'
 import logo from '../../assets/logo.png'
 import FormInput from '../components/FormInput'
@@ -40,12 +40,14 @@ const SignIn = () => {
             value={form.email}
             handleChangeText={(e) => setForm({ ...form, email: e })}
             keyboardType="email-address"
+            placeholder={"Email"}
           />
           <FormInput
             title="Password"
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             secureTextEntry
+            placeholder={"Password"}
           />
 
           <CustomBtn
@@ -57,6 +59,9 @@ const SignIn = () => {
           </View>
 
           <View style={styles.footer}>
+            <TouchableOpacity onPress={() => router.push("reset")}>
+              <Text style={styles.forgotPassword}>Forgot Password?</Text>
+            </TouchableOpacity>
             <Text style={styles.footerText}>
               Don't have an account?{' '}
               <Link href='/signup' style={styles.signUpLink}>
@@ -97,29 +102,34 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#093731',
+    color: '#f2f3f4',
     marginBottom: 20,
     textAlign: 'center',
   },
   button: {
     marginTop: 20,
     backgroundColor: '#093731',
-
-  
   },
   footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
     marginTop: 20,
-    
+    alignItems: "end",
+    width: "100%"
   },
   footerText: {
-    color: '#000',
+    color: "#f2f3f4",
     fontSize: 16,
   },
   signUpLink: {
-    color: '#f2f3f4',
-    fontWeight: 'bold',
+    color: "red",
+    fontWeight: "semiBold",
+    
+  },
+  forgotPassword: {
+    color: "#f2f3f4",
+    fontSize: 16,
+    marginBottom: 10,
+    textDecorationLine:"underline",
+
   },
 })
 

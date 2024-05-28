@@ -39,7 +39,7 @@ const Signup = () => {
         console.log("Response Email.", { ...response });
 
         const userRef = collection(db, "users");
-        const newUserRef = await addDoc(userRef, {
+        await addDoc(userRef, {
           username,
           email,
         });

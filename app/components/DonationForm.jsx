@@ -91,9 +91,9 @@ const DonationForm = ({  }) => {
       }
 
       // Call the callback to refresh the data
-      if (onDonationComplete) {
-        onDonationComplete();
-      }
+      // if (onDonationComplete) {
+      //   onDonationComplete();
+      // }
 
       router.replace("home");
     } catch (error) {
