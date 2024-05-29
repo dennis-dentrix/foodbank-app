@@ -9,13 +9,14 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 // import { auth, db, addDoc } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import * as Notifications from "expo-notifications"
 import { useNavigation } from "@react-navigation/native";
 import { db, auth } from "../../lib/firebase";
 import { useGlobalContext } from "../services/userContext";
+import { router } from "expo-router";
 
 const VolunteerScreen = () => {
   const [name, setName] = useState("");
@@ -74,7 +75,7 @@ const VolunteerScreen = () => {
         },
         trigger: null,
       });
-      navigation.navigate("Home");
+      router.push("home")
     } catch (err) {
       console.log(err);
       setError(err)
@@ -94,7 +95,7 @@ const VolunteerScreen = () => {
     addVolunteer()
       .then(() => {
         setLoading(false);
-        navigation.navigate("Home");
+        router.push("home")
       })
       .catch((err) => {
         setLoading(false);
@@ -164,7 +165,7 @@ const VolunteerScreen = () => {
       </View>
 
 {
-  loading ? <ActivityIndicator size={"large"} color={"#0000ff"} /> :  <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+  loading ? <ActivityIndicator size={"large"} color={"#0000ff"} /> :  <TouchableOpacity style={styles.button} onPress={addVolunteer}>
   <Text style={styles.buttonText}>Submit</Text>
 </TouchableOpacity>
 }

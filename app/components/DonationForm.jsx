@@ -90,10 +90,6 @@ const DonationForm = ({  }) => {
         });
       }
 
-      // Call the callback to refresh the data
-      // if (onDonationComplete) {
-      //   onDonationComplete();
-      // }
 
       router.replace("home");
     } catch (error) {
@@ -199,9 +195,7 @@ const DonationForm = ({  }) => {
   );
 };
 
-DonationForm.propTypes = {
-  onDonationComplete: PropTypes.func.isRequired,
-};
+
 
 const styles = StyleSheet.create({
   container: {

@@ -14,7 +14,7 @@ import AppMenu from "../components/AppMenu";
 import { auth, collection, db, getDocs } from "../../lib/firebase";
 import { useGlobalContext } from "../services/userContext";
 import { RenderItem } from "../components/RenderItem";
-import DonationForm from "../components/DonationForm"; // Ensure this import is correct
+import DonationForm from "../components/DonationForm"; 
 
 const logout = async () => {
   try {
